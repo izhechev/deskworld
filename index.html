@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Build a little city with your hands. A playable tabletop world with paper-token controls, moving neighbours, and a race against the rain."
+    />
+    <title>DeskWorld — A little city, in your hands</title>
+    <link rel="icon" href="./mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#workspace">Skip to your city</a>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="DeskWorld home"
+        ><span class="brand-mark" aria-hidden="true">▥</span
+        ><span
+          >desk<span class="brand-light">world</span><small>A TABLETOP PLAYGROUND</small></span
+        ></a
+      >
+      <div class="header-actions">
+        <span class="version">EARLY EDITION / 01</span
+        ><button id="help" class="quiet">How to play <span aria-hidden="true">↗</span></button
+        ><button id="export" class="outline">Export city <span aria-hidden="true">↓</span></button>
+      </div>
+    </header>
+    <main id="workspace">
+      <section class="intro">
+        <div>
+          <p class="eyebrow"><span class="live-dot"></span> SMALL WORLD. MANY POSSIBILITIES.</p>
+          <h1>A little city.<br /><em>In your hands.</em></h1>
+        </div>
+        <p class="intro-copy">
+          Lay a road. Plant a park.<br />Make a way home for your neighbours.<br /><span
+            >Start with your mouse, or bring some paper.</span
+          >
+        </p>
+      </section>
+      <div class="workbench">
+        <section class="world-panel" aria-label="Your neighbourhood">
+          <div class="world-heading">
+            <div>
+              <span class="mini-label">YOUR NEIGHBOURHOOD</span>
+              <h2 id="town-title">Little Sunday</h2>
+            </div>
+            <span id="weather" class="weather">☀ A good day to build</span>
+          </div>
+          <div id="stage" class="stage">
+            <div class="loading" id="loading">Waking up the neighbourhood…</div>
+          </div>
+          <div class="canvas-top">
+            <span id="mode-pill" class="mode-pill"><span></span> FREE PLAY</span
+            ><button id="map-open" class="map-button">
+              Keyboard map <span aria-hidden="true">▦</span>
+            </button>
+          </div>
+          <div class="canvas-bottom">
+            <p id="hover-text">Pick a piece, then click a tile.</p>
+            <div class="view-controls" aria-label="City view">
+              <button id="rotate-left" aria-label="Rotate city left">↶</button
+              ><button id="rotate-right" aria-label="Rotate city right">↷</button><span></span
+              ><button id="zoom-out" aria-label="Zoom out">−</button
+              ><button id="zoom-in" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+          <div class="world-footer">
+            <div class="transport">
+              <button id="pause" class="round-control" aria-label="Pause neighbours">Ⅱ</button
+              ><button id="speed" class="speed" aria-label="Simulation speed 1 times">1×</button
+              ><label class="route-switch"
+                ><input id="routes" type="checkbox" checked /><span>Show routes</span></label
+              >
+            </div>
+            <div class="foot-note">
+              <span class="live-dot"></span
+              ><span id="simulation-note">Neighbours are heading home</span>
+            </div>
+          </div>
+        </section>
+        <aside class="sidebar" aria-label="Building controls">
+          <div class="mode-picker" role="group" aria-label="Control mode">
+            <button id="mouse-mode" aria-pressed="true">Mouse & keyboard</button
+            ><button id="paper-mode" aria-pressed="false">Paper & camera</button>
+          </div>
+          <section class="tool-section">
+            <div class="section-title">
+              <h2>Make yourself at home.</h2>
+              <span>01—06</span>
+            </div>
+            <p class="section-copy">Choose a piece. Give it a place.</p>
+            <div class="tools" role="group" aria-label="Building pieces">
+              <button class="tool" data-tool="road" aria-pressed="true">
+                <span class="piece road-piece">╋</span
+                ><span>Road<small>Connect the dots</small></span
+                ><kbd>1</kbd>
+              </button>
+              <button class="tool" data-tool="home" aria-pressed="false">
+                <span class="piece home-piece">⌂</span
+                ><span>Home<small>A place to return</small></span
+                ><kbd>2</kbd>
+              </button>
+              <button class="tool" data-tool="studio" aria-pressed="false">
+                <span class="piece studio-piece">▥</span
+                ><span>Studio<small>Where days begin</small></span
+                ><kbd>3</kbd>
+              </button>
+              <button class="tool" data-tool="park" aria-pressed="false">
+                <span class="piece park-piece">♣</span
+                ><span>Park<small>A little breathing room</small></span
+                ><kbd>4</kbd>
+              </button>
+              <button class="tool" data-tool="block" aria-pressed="false">
+                <span class="piece block-piece">≋</span
+                ><span>Roadblock<small>Find another way</small></span
+                ><kbd>5</kbd>
+              </button>
+              <button class="tool" data-tool="empty" aria-pressed="false">
+                <span class="piece erase-piece">×</span
+                ><span>Clear<small>Room for something new</small></span
+                ><kbd>6</kbd>
+              </button>
+            </div>
+            <div class="edit-actions">
+              <button id="undo" class="quiet" disabled>↶ Undo</button
+              ><button id="import" class="quiet">Import city ↑</button
+              ><button id="reset" class="quiet">Reset</button
+              ><input id="import-file" type="file" accept="application/json,.json" hidden />
+            </div>
+          </section>
+          <section id="paper-panel" class="paper-panel" hidden>
+            <div class="section-title">
+              <h2>Paper becomes a place.</h2>
+              <span>LIVE INPUT</span>
+            </div>
+            <p class="section-copy">
+              Use bright pieces on a plain board, viewed from directly above.
+            </p>
+            <div class="paper-preview">
+              <canvas
+                id="paper-canvas"
+                width="240"
+                height="240"
+                aria-label="Paper tracking preview; drag pieces in demo mode"
+              ></canvas
+              ><span id="camera-state">CAMERA OFF</span>
+            </div>
+            <video id="camera-video" muted playsinline hidden></video>
+            <p class="token-key">
+              <span><i class="coral"></i>Home</span><span><i class="green"></i>Park</span
+              ><span><i class="blue"></i>Roadblock</span>
+            </p>
+            <p id="paper-hint" class="paper-hint">
+              The square maps to the whole city; the top edge is row 1.
+            </p>
+            <div class="camera-buttons">
+              <button id="camera-start" class="primary">Use my camera</button
+              ><button id="paper-demo" class="outline">Try paper demo</button
+              ><button id="camera-stop" class="outline" hidden>Stop input</button
+              ><button id="freeze" class="outline" hidden>Keep these pieces</button>
+            </div>
+            <p class="privacy-note">No recording. Frames stay in this browser.</p>
+          </section>
+          <section class="town-health" aria-label="City facts">
+            <div><strong id="connected-count">—</strong><span>homes connected</span></div>
+            <div><strong id="park-count">—</strong><span>little green spaces</span></div>
+          </section>
+          <section class="challenge-card">
+            <div class="challenge-top">
+              <span class="mini-label">A SMALL CHALLENGE</span><span aria-hidden="true">☂</span>
+            </div>
+            <h2 id="challenge-title">Before the rain.</h2>
+            <p id="challenge-copy">
+              Road works. Twelve neighbours.<br />One minute to get everyone home.
+            </p>
+            <div id="challenge-progress" hidden>
+              <div>
+                <span id="arrival-count">0 / 12 home</span><strong id="countdown">1:00</strong>
+              </div>
+              <progress id="arrivals" value="0" max="12" aria-label="Neighbours home"></progress>
+            </div>
+            <button id="challenge" class="challenge-button">
+              Take the challenge <span aria-hidden="true">↗</span>
+            </button>
+          </section>
+        </aside>
+      </div>
+      <section class="underboard">
+        <p>
+          <span class="number">01</span> Change the city.<br /><strong
+            >Watch it find a new way.</strong
+          >
+        </p>
+        <p>
+          Every neighbour follows an actual road route.<br />Remove a connection and they wait;
+          repair it and they move.
+        </p>
+        <span class="stamp">BUILT FOR<br /><strong>curiosity.</strong></span>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <span>DESKWORLD / A PLAYABLE EXPERIMENT</span
+      ><span id="save-status">Changes stay in this browser</span
+      ><span>Make a small change. See what happens.</span>
+    </footer>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog id="help-dialog" aria-labelledby="help-title">
+      <button class="close-dialog" aria-label="Close help">×</button>
+      <p class="eyebrow">WELCOME TO YOUR DESK</p>
+      <h2 id="help-title">Small pieces.<br />Real connections.</h2>
+      <p>Build a neighbourhood and watch twelve neighbours walk from studios to homes.</p>
+      <ol>
+        <li><strong>Pick a piece.</strong> Click a tile to place it, or use the keyboard map.</li>
+        <li>
+          <strong>Connect homes to studios.</strong> People walk only along roads and cannot cut
+          through other buildings.
+        </li>
+        <li>
+          <strong>Bring some paper.</strong> Coral makes a home, green makes a park, and blue blocks
+          a road.
+        </li>
+      </ol>
+      <p>
+        For paper tracking, point your camera straight down at a plain square board; align it with
+        the preview square and keep the camera still.
+      </p>
+      <p class="fine-print">
+        A small simulation, inspired by tangible city research; it is not an urban planning
+        forecast.
+      </p>
+      <button class="primary close-dialog">Let's build</button>
+    </dialog>
+    <dialog id="challenge-dialog" aria-labelledby="challenge-dialog-title">
+      <button class="close-dialog" aria-label="Close challenge instructions">×</button>
+      <p class="eyebrow">60 SECONDS / 12 NEIGHBOURS</p>
+      <h2 id="challenge-dialog-title">A storm is on its way.</h2>
+      <p>Start with a neighbourhood split by three roadblocks on row 4.</p>
+      <p>
+        Replace a roadblock with a road to reconnect the northern homes, then get all twelve
+        neighbours home before the rain.
+      </p>
+      <p class="fine-print">
+        Your sandbox city is kept for your return; homes and studios stay fixed during the
+        challenge.
+      </p>
+      <button id="challenge-start" class="primary">Start the clock →</button>
+    </dialog>
+    <dialog id="map-dialog" class="map-dialog" aria-labelledby="map-title">
+      <button class="close-dialog" aria-label="Close keyboard map">×</button>
+      <p class="eyebrow">SAME CITY / ANOTHER VIEW</p>
+      <h2 id="map-title">Your neighbourhood map.</h2>
+      <label class="map-tool-label"
+        >Place
+        <select id="map-tool">
+          <option value="road">Road</option>
+          <option value="home">Home</option>
+          <option value="studio">Studio</option>
+          <option value="park">Park</option>
+          <option value="block">Roadblock</option>
+          <option value="empty">Clear</option>
+        </select></label
+      >
+      <p class="fine-print">Arrow keys move between tiles; Enter places a piece.</p>
+      <div id="map-grid" class="map-grid" role="group" aria-label="11 by 11 city map"></div>
+      <p class="map-legend">⌂ Home · ▥ Studio · ♣ Park · × Roadblock · ╋ Road · ≈ Pond</p>
+    </dialog>
+    <noscript><p class="no-script">DeskWorld needs JavaScript to run the city.</p></noscript>
+  </body>
+</html>
