@@ -1,5 +1,7 @@
 # DeskWorld
 
+**[Play DeskWorld in your browser](https://izhechev.github.io/deskworld/)**. You can start with a mouse and turn on the camera when you want to try the paper controls.
+
 A little city you can change with your mouse or coloured paper pieces. Build roads, move buildings, and watch twelve neighbours find a way home.
 
 DeskWorld is a browser-based prototype built around a small 3D neighbourhood. The city, simulation, and paper detector run on your device.
