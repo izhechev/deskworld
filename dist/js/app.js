@@ -78,7 +78,7 @@ function selectTool(type) {
     button.setAttribute('aria-pressed', String(button.dataset.tool === type)),
   );
   $('#map-tool').value = type;
-  $('#hover-text').textContent = `${LABELS[type]} selected · click a tile`;
+  $('#hover-text').textContent = `${LABELS[type]} selected · place it on a tile`;
 }
 function drawMap() {
   document.querySelectorAll('.map-cell').forEach((button, id) => {
@@ -152,11 +152,12 @@ function updateStatus() {
         : sim.status === 'won'
           ? 'Everyone made it home'
           : 'Neighbours are heading home';
-  $('#pause').textContent = paused ? '▶' : 'Ⅱ';
+  $('#pause').classList.toggle('is-paused', paused);
+  $('#pause').title = paused ? 'Resume neighbours' : 'Pause neighbours';
   $('#pause').setAttribute('aria-label', paused ? 'Resume neighbours' : 'Pause neighbours');
   $('#challenge-progress').hidden = !sim.challenge;
   if (sim.challenge) {
-    $('#mode-pill').lastChild.textContent = ' STORM CHALLENGE';
+    $('#mode-pill').lastChild.textContent = ' Storm challenge';
     $('#town-title').textContent = 'The way home';
     const left = Math.max(0, Math.ceil(sim.deadline - sim.elapsed));
     $('#countdown').textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
@@ -167,28 +168,28 @@ function updateStatus() {
         ? 'Everyone is home.'
         : sim.status === 'lost'
           ? 'The rain arrived.'
-          : 'Before the rain.';
+          : 'Beat the storm';
     $('#challenge-copy').textContent =
       sim.status === 'won'
         ? 'A small repair made a way for everyone.'
         : sim.status === 'lost'
           ? `${sim.delivered} neighbours made it; try reconnecting the roads earlier.`
           : 'Replace a roadblock on row 4 with a road; the northern homes need a connection.';
-    $('#challenge').textContent = 'Back to free play ↗';
+    $('#challenge').textContent = 'Back to free play';
     $('#weather').textContent =
       sim.status === 'lost'
-        ? '☂ Rain on the rooftops'
+        ? 'Rain on the rooftops'
         : sim.status === 'won'
-          ? '☀ Home, just in time'
-          : '☁ Rain is on its way';
+          ? 'Home, just in time'
+          : 'Rain is on its way';
   } else {
-    $('#mode-pill').lastChild.textContent = ' FREE PLAY';
+    $('#mode-pill').lastChild.textContent = ' Free play';
     $('#town-title').textContent = 'Little Sunday';
-    $('#challenge-title').textContent = 'Before the rain.';
+    $('#challenge-title').textContent = 'Beat the storm';
     $('#challenge-copy').textContent =
-      'Road works. Twelve neighbours. One minute to get everyone home.';
-    $('#challenge').textContent = 'Take the challenge ↗';
-    $('#weather').textContent = '☀ A good day to build';
+      'Reopen a blocked road and get 12 neighbours home in 60 seconds.';
+    $('#challenge').textContent = 'Take the challenge';
+    $('#weather').textContent = 'Clear skies';
   }
 }
 function openDialog(id) {
